@@ -4,4 +4,5 @@ exports.call = function(){
 }
 
 module.exports={name:"111"} 
-exports.call =name;
+
+

@@ -1,5 +1,20 @@
 var User = require('../models/user')
 
+//显示登陆页面
+exports.showSignin  = function(req,res){
+	res.render('signin',{
+		title:"登陆页面",
+	})
+}
+
+//显示注册页面
+exports.showSignup  = function(req,res){
+	res.render('signup',{
+		title:"注册页面",
+	})
+}
+
+
 // 用户注册
 	exports.signup  = function(req,res){
 		var _user = req.body.user
@@ -8,10 +23,9 @@ var User = require('../models/user')
 			if(err){
 				console.log(err)
 			}
-			console.log(user)
-			if(user.length > 0){
+			if(user){
 				console.log('用户名已注册')
-				return res.redirect('/')
+				return res.redirect('/signin')
 			}else{
 				var user = new User(_user)
 				user.save(function(err,user){
@@ -37,7 +51,7 @@ var User = require('../models/user')
 			console.log(user)
 			if(!user){
 				console.log('不存在此用户名')
-				return res.redirect('/')
+				return res.redirect('/signup')
 			}
 
 			user.comparePassword(password,function(err,isMatch){
@@ -50,13 +64,15 @@ var User = require('../models/user')
 					return res.redirect('/')
 				}else{
 					console.log("password is not matched")
-					return res.redirect('/')
+					return res.redirect('/signin')
 				}
 
 			})
 
 		})
 	}
+
+
 
 	// 用户退出登录
 	exports.logout = function(req,res){

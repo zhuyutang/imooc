@@ -1,0 +1,7 @@
+body{padding-bottom: 100px !important;}
+img{max-width: 100%}
+
+/*电影详情*/
+#detail{}
+#detail #comment .pull-left{width: 70px; height: 60px}
+#detail #comment .pull-left img{width: 100%; height: 100%; object-fit: contain;}

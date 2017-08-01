@@ -4,7 +4,7 @@ var User = require('../models/user')
 exports.showSignin  = function(req,res){
 	res.render('signin',{
 		title:"登陆页面",
-	})
+	}) 
 }
 
 //显示注册页面
@@ -19,7 +19,7 @@ exports.showSignup  = function(req,res){
 	exports.signup  = function(req,res){
 		var _user = req.body.user
 		console.log(_user)
-		User.find({name:_user.name},function(err,user){
+		User.findOne({name:_user.name},function(err,user){//如果没有结果的话，findOne返回是null，find返回是[],注意if里面的判断
 			if(err){
 				console.log(err)
 			}
@@ -32,7 +32,7 @@ exports.showSignup  = function(req,res){
 					if(err){ 
 						console.log(err)
 					}
-					res.redirect("/admin/userlist")
+					res.redirect("/")
 				})
 			}
 		})
@@ -93,4 +93,36 @@ exports.showSignup  = function(req,res){
 				users:users
 			})
 		})
+	}
+
+	// 用户删除
+	exports.list = function(req,res){
+			User.fetch(function(err,users){
+			if(err){
+				console.log(err)
+			}
+			res.render('userlist',{
+				title:"imooc 用户列表页",
+				users:users
+			})
+		})
+	}
+
+		// 判断是否登陆
+	exports.signinRequired = function(req,res,next){
+
+		var user = req.session.user;
+		if(!user){
+			return res.redirect('/signin')
+		}
+		next();
+	}
+
+	// 判断用户是否有管理员
+	exports.adminRequired = function(req,res,next){
+		var user = req.session.user;
+		if(user.role <=10){
+			return res.redirect('/signin')
+		}
+		next();
 	}

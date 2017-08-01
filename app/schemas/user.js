@@ -11,7 +11,7 @@ var UserSchema = new mongoose.Schema({
 		unique:true,
 		type:String 
 	},
-
+ 
 	//0:nomal user
 	//>10: admin
 	//>50:super admin

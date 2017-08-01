@@ -8,7 +8,7 @@ var mongoStore = require('connect-mongo')(session)
 var logger = require('morgan')
 
 var port = 3000;
-var app = express();
+var app = express(); 
 var dbUrl = "mongodb://localhost/imooc"
 mongoose.connect(dbUrl) 
 
@@ -28,7 +28,7 @@ app.use(session({
 
 // 配置开发环境
 if(app.get('env') == 'development'){
-	app.set('showStackError',true)
+	// app.set('showStackError',true)
 	app.use(logger(':method :url :status'))
 	app.locals.pretty = true
 	mongoose.set('debug',true)

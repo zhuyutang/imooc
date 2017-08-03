@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
 var ObjectId = Schema.Types.ObjectId
 
-var categorySchema = new Schema({
+var CategorySchema = new Schema({
 	name:String,
-	movies:[{type:ObjectId, ref:'Movie'}]
+	movies:[{type:ObjectId, ref:'Movie'}],
 	meta:{
 		createAt:{
 			type:Date,

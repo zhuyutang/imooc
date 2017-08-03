@@ -11,7 +11,10 @@ var MovieSchema = new Schema({
 	flash:String, 
 	poster:String,
 	year:String,
-	category:{type:ObjectId,ref:'Category'}
+	category:{
+		type:ObjectId,
+		ref:'Category'
+	},
 	meta:{
 		createAt:{
 			type:Date,

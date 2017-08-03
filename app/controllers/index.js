@@ -1,9 +1,8 @@
-	var Movie = require('../models/movie')
 	var Category = require('../models/Category')
 
 	// 首页
 	exports.index = function(req,res){
-		Category
+		Category 
 		.find({})
 		.populate({path:'movies',options:{limit:5}})
 		.exec(function(err,categories){

@@ -1,7 +1,8 @@
 var _ = require('underscore')//函数库，主要用extend方法 
 var Movie = require('../models/movie')
 var Comment = require('../models/comment')
-
+var Category = require('../models/category')
+ 
 
 // 详情页
 	exports.detail = function(req,res){
@@ -22,33 +23,26 @@ var Comment = require('../models/comment')
 
 	// 后台录入页
 	exports.new  = function(req,res){
-
-		console.log("get:admin/movie");
-
-		res.render('admin',{
-			title:"imooc 后台录入",
-			movie:{
-				title:'',
-				doctor:'',
-				country:'',
-				year:'',
-				poster:'',
-				flash:'',
-				summary:'',
-				language:''
-			}
+		Category.find({},function(err,categories){
+			res.render('admin',{
+				title:"imooc 电影录入",
+				categories:categories,
+				movie:{}
+			})
 		})
 	}
 
 	// 数据更新页
 	exports.update  = function(req,res){
 		var id = req.params.id
-
 		if(id){
 			Movie.findById(id,function(err,movie){
-				res.render('admin',{
-					title:'imooc 后台更新页',
-					movie:movie
+				Category.find({},function(err,categories){
+					res.render('admin',{
+						title:'imooc 电影更新',
+						movie:movie,
+						categories:categories
+					})
 				})
 			})
 		}
@@ -57,10 +51,12 @@ var Comment = require('../models/comment')
 	// 数据上传页
 	exports.save  = function(req,res){
 
+		console.log(req.body.movie)
+
 		var id = req.body.movie._id;//获取上传过来的参数的形式二
 		var movieObj = req.body.movie
 		var _movie
-		if(id !== 'undefined'){
+		if(id){
 			Movie.findById(id,function(err,movie){
 				if(err){
 					console.log(err)
@@ -76,23 +72,20 @@ var Comment = require('../models/comment')
 			})
 		}
 		else{
-			_movie = new Movie({
-				doctor:movieObj.doctor,
-				title:movieObj.title,
-				country:movieObj.country,
-				language:movieObj.language,
-				year:movieObj.year,
-				poster:movieObj.poster,
-				summary:movieObj.summary,
-				flash:movieObj.flash
-			})
-
+			_movie = new Movie(movieObj)
+			var categoryId = _movie.category
 			_movie.save(function(err,movie){
 				if(err){
 					console.log(err)
 				}
 
-				res.redirect('/movie/' + movie._id)
+				// 把电影存入分类中
+				Category.findById(categoryId,function(err,category){
+					category.movies.push(movie._id)
+					category.save(function(err,category){
+						res.redirect('/movie/' + movie._id)
+					})
+				})
 			})
 		}
 	}

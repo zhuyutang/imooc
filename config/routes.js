@@ -39,4 +39,7 @@ module.exports = function(app){
 	app.get('/admin/category/new',User.signinRequired,User.adminRequired,Category.new)
 	app.post('/admin/category/save',User.signinRequired,User.adminRequired,Category.save)
 	app.get('/admin/category/list',User.signinRequired,User.adminRequired,Category.list)
+
+	// 查询
+	app.get('/results',Index.search)
 }

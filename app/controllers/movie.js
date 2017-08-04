@@ -50,9 +50,6 @@ var Category = require('../models/category')
 
 	// 数据上传页
 	exports.save  = function(req,res){
-
-		console.log(req.body.movie)
-
 		var id = req.body.movie._id;//获取上传过来的参数的形式二
 		var movieObj = req.body.movie
 		var _movie
@@ -72,21 +69,38 @@ var Category = require('../models/category')
 			})
 		}
 		else{
-			_movie = new Movie(movieObj)
-			var categoryId = _movie.category
-			_movie.save(function(err,movie){
-				if(err){
-					console.log(err)
-				}
+			var categoryId = movieObj.category;
+			var categoryName = movieObj.categoryName;
 
-				// 把电影存入分类中
-				Category.findById(categoryId,function(err,category){
-					category.movies.push(movie._id)
-					category.save(function(err,category){
-						res.redirect('/movie/' + movie._id)
-					})
+				_movie = new Movie(movieObj)
+				_movie.save(function(err,movie){
+					if(err){
+						console.log(err)
+					}
+					// 如果是已有分类，则更新分类；如果是新分类，则创建新的分类
+					if(categoryId){
+						// 把电影存入分类中
+						Category.findById(categoryId,function(err,category){
+							category.movies.push(movie._id)
+
+							category.save(function(err,category){
+								res.redirect('/movie/' + movie._id)
+							})
+						})
+					}else if(categoryName){
+						var category = new Category({
+							name:categoryName,
+							movies:[movie._id]
+						})
+						category.save(function(err,category){
+							movie.category = category._id;
+							movie.save(function(err,movie){
+								res.redirect('/movie/' + movie._id)
+							})
+						})
+					}
 				})
-			})
+
 		}
 	}
 

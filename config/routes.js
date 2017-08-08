@@ -13,7 +13,7 @@ module.exports = function(app){
 		next()
 	})
 
-	// 首页
+	// 首页 
 	app.get('/',Index.index)
 
 	// User

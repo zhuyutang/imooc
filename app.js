@@ -5,7 +5,7 @@ var bodyParser = require('body-parser')//表单数据格式化
 var cookieParser = require('cookie-parser')//cookie
 var session = require('express-session')//session,依赖cookie
 var mongoStore = require('connect-mongo')(session)
-var logger = require('morgan')
+var logger = require('morgan')//日志
 
 var port = 3000;
 var app = express(); 
@@ -17,6 +17,7 @@ app.set("view engine","jade");
 
 app.use(bodyParser.urlencoded({extended: true}))//表单数据格式化
 app.use(express.static(path.join(__dirname,'public')))//静态资源的请求路径
+// app.use(multipart())//为了获取表单的文件数据
 app.use(cookieParser())//
 app.use(session({
 	secret:"imooc",

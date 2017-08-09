@@ -2,6 +2,7 @@ var express = require("express");
 var path = require('path')
 var mongoose = require('mongoose')
 var bodyParser = require('body-parser')//表单数据格式化
+
 var cookieParser = require('cookie-parser')//cookie
 var session = require('express-session')//session,依赖cookie
 var mongoStore = require('connect-mongo')(session)

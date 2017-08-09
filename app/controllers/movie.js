@@ -4,6 +4,7 @@ var Comment = require('../models/comment')
 var Category = require('../models/category')
 var fs = require('fs')
 var path = require('path')
+
  
 
 // 详情页
@@ -57,7 +58,9 @@ var path = require('path')
 
 	// 海报上传
 	exports.savePoster = function(req,res,next){
-		var posterData = req.files.uploadPoster//如果没有使用bodyParser，则不可使用req.files
+
+
+		var posterData = req.file//如果没有使用bodyParser，则不可使用req.files
 
 		console.log("文件信息：")
 		console.log(posterData)

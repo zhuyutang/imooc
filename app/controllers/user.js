@@ -112,6 +112,7 @@ exports.showSignup  = function(req,res){
 	exports.signinRequired = function(req,res,next){
 
 		var user = req.session.user;
+		console.log(user)
 		if(!user){
 			return res.redirect('/signin')
 		}

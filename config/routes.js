@@ -3,10 +3,10 @@ var User = require('../app/controllers/user')
 var Movie = require('../app/controllers/movie')
 var Comment = require('../app/controllers/comment')
 var Category = require('../app/controllers/category')
-var multer = require('multer')//表单数据格式化
-var upload = multer({dest:'upload/'})
+var multiparty = require('connect-multiparty')//表单文件上传中间件
+var multipartyMW = multiparty()
  
-module.exports = function(app){
+module.exports = function(app){ 
 	
 	// 保留登陆状态
 	app.use(function(req,res,next){
@@ -30,7 +30,7 @@ module.exports = function(app){
 	app.get('/movie/:id',Movie.detail)
 	app.get('/admin/movie/new',User.signinRequired,User.adminRequired,Movie.new)
 	app.get('/admin/movie/update/:id',User.signinRequired,User.adminRequired,Movie.update)
-	app.post('/admin/movie/save',User.signinRequired,User.adminRequired, upload.single('uploadPoster'), Movie.savePoster, Movie.save)
+	app.post('/admin/movie/save',User.signinRequired,User.adminRequired,multipartyMW, Movie.savePoster, Movie.save)
 	app.get('/admin/movie/list',User.signinRequired,User.adminRequired,Movie.list)
 	app.delete('/admin/movie/list',User.signinRequired,User.adminRequired,Movie.del)
 

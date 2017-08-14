@@ -8,7 +8,7 @@ var session = require('express-session')//session,依赖cookie
 var mongoStore = require('connect-mongo')(session)
 var logger = require('morgan')//日志
 
-var port = 3000;
+var port = 3000; 
 var app = express(); 
 var dbUrl = "mongodb://localhost/imooc"
 mongoose.connect(dbUrl) 

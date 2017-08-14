@@ -59,22 +59,25 @@ var path = require('path')
 	// 海报上传
 	exports.savePoster = function(req,res,next){
 
+		var posterData = req.files.uploadPoster//如果没有使用connect-multiparty中间件，则不可使用req.files
 
-		var posterData = req.file//如果没有使用bodyParser，则不可使用req.files
+		// console.log("----文件信息：----")
+		// console.log(posterData)
 
-		console.log("文件信息：")
-		console.log(posterData)
-
-
-		var filePath = posterData.resolve()
-		var originalFilename = posterData.originalFilename
+		var filePath = posterData.path;
+		var originalFilename = posterData.originalFilename;
 
 		if(originalFilename){
 			fs.readFile(filePath,function(err,data){
+
+				if(err){
+					console.log(err)
+				}
+
 				var timestamp = Date.now();//当前时间
 				var type = posterData.type.split('/')[1];
 				var poster = timestamp + '.' + type;
-				var newPath = path.join(__dirname,'../../','/public/upload' + poster)
+				var newPath = path.join(__dirname,'../../','/public/upload/' + poster)
 
 				fs.writeFile(newPath,data,function(err){
 					req.poster = poster;
@@ -93,7 +96,6 @@ var path = require('path')
 		var id = req.body.movie._id;//获取上传过来的参数的形式二
 		var movieObj = req.body.movie
 		var _movie
-		
 		if(req.poster){
 			movieObj.poster = req.poster
 		}

@@ -9,6 +9,19 @@ function getRandomString(len){
 var should = require('should')
 var app = require('../../app')
 var mongoose = require('mongoose')
-var User = require('../../app/models/user')
+var User = require('../../app/models/user') 
 
 //test
+var usr = {}
+
+descripe("Unit test",function(){
+	descript("Model user:",function(){
+		user = {
+			name:getRandomString(),
+			password:'password'
+		}
+		done()
+	})
+
+	
+})
